@@ -15,7 +15,7 @@
         <div class="bounce3"></div>
     </div>
     <div id='holder'>
-        <h2>Example-SMART-App</h2>
+        <h2>Example-SMART-App 1</h2>
         <h2>Patient Resource</h2>
         <table>
             <tr>
@@ -68,16 +68,24 @@
     <script src='./lib/fhir-client.js'></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script>
-        console.log('URL: ' + window.location.href);
-        extractData().then(
-            //Display Patient Demographics and Observations if extractData was success
-            function (p) {
-                drawVisualization(p);
-            }, //Display 'Failed to call FHIR Service' if extractData failed
-            function () {
-                $('#loading').hide();
-                $('#errors').html('<p> Failed to call FHIR Service </p>');
+        if (window.location.href.includes("code")) {
+            console.log('URL: ' + window.location.href);
+            extractData().then(
+                //Display Patient Demographics and Observations if extractData was success
+                function (p) {
+                    drawVisualization(p);
+                }, //Display 'Failed to call FHIR Service' if extractData failed
+                function () {
+                    $('#loading').hide();
+                    $('#errors').html('<p> Failed to call FHIR Service </p>');
+                });
+        }
+        else {
+            FHIR.oauth2.authorize({
+                'client_id': '57b58e44-dc31-481a-bfd6-ae15527c9f16'
+                , 'scope': 'patient/Patient.read patient/Observation.read patient/DocumentReference.read patient/DocumentReference.write launch online_access openid profile'
             });
+        }
     </script>
 </body>
 
